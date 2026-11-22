@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>タイプのトレーニング</title>
+
+<style>
+
+table.Q td {
+
+    width: 30px;
+
+    height: 30px;
+
+    font-size: 20px;
+
+    text-align: center;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>タイプのトレーニング</h1>
+
+<p>表示されたアルファベットをキーボードで入力してください。</p>
+
+<div id="waku"></div>
+
+<script>
+
+// グローバル変数
+
+var mondai = "";
+
+var cnt = 0;
+
+var numberOfCharacters = 20;
+
+// アルファベット
+
+var moji = new Array(
+
+"A","B","C","D","E","F","G","H","I","J",
+
+"K","L","M","N","O","P","Q","R","S","T",
+
+"U","V","W","X","Y","Z"
+
+);
+
+// キーコード
+
+var kcode = new Array(
+
+65,66,67,68,69,70,71,72,73,
+
+74,75,76,77,78,79,80,81,82,
+
+83,84,85,86,87,88,89,90
+
+);
+
+var rnd = new Array();
+
+// 最初に問題を表示
+
+resetTypeset();
+
+// キーボードを押したときに実行
+
+document.onkeydown = typeCheck;
+
+// 問題をリセットする関数
+
+function resetTypeset() {
+
+    cnt = 0;
+
+    randomGeneration();
+
+    hyouji();
+
+}
+
+// 乱数を作る関数
+
+function randomGeneration() {
+
+    for (var i = 0; i < numberOfCharacters; i++) {
+
+        rnd[i] = Math.floor(Math.random() * 26);
+
+    }
+
+}
+
+// 問題を表示する関数
+
+function hyouji() {
+
+    mondai = "<table class='Q'>";
+
+    for (var i = 0; i < numberOfCharacters / 10; i++) {
+
+        mondai += "<tr>";
+
+        for (var j = 0; j < 10; j++) {
+
+            var idnum = i * 10 + j;
+
+            mondai += "<td id='word" + idnum + "'>"
+
+            + moji[rnd[idnum]] + "</td>";
+
+        }
+
+        mondai += "</tr>";
+
+    }
+
+    mondai += "</table>";
+
+    document.getElementById("waku").innerHTML = mondai;
+
+}
+
+// キーボード入力を確認する関数
+
+function typeCheck() {
+
+    var kc;
+
+    kc = event.keyCode;
+
+    if (kc == kcode[rnd[cnt]]) {
+
+        var idName = "word" + cnt;
+
+        document.getElementById(idName).style.color = "#dddddd";
+
+        cnt++;
+
+        if (cnt == numberOfCharacters) {
+
+            document.getElementById("waku").innerHTML =
+
+            "完了しました！お疲れさまでした！";
+
+        }
+
+    }
+
+}
+
+</script>
+
+<br>
+
+<button onclick="resetTypeset()">初期化</button>
+
+</body>
+
+</html>
